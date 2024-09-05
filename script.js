@@ -37,7 +37,7 @@ window.onload = function() {
             // Stocker le token dans un cookie de session
             document.cookie = `token=${data.token}; path=/;`;
             // Rediriger vers une autre page après la connexion réussie
-            window.location.href = 'pagemeteo.html'; // Remplacez 'index.html' par l'URL de la page vers laquelle vous souhaitez rediriger
+            window.location.href = 'nice.html'; // Remplacez 'index.html' par l'URL de la page vers laquelle vous souhaitez rediriger
         })
         .catch(error => {
             console.error('Error:', error);
