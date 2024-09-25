@@ -1,0 +1,16 @@
+#logout-button45 {
+    top: 10px;
+    right: 10px;
+    background-color: #8f681a;
+    border: none;
+    border-radius: 20px; /* Augmentation de la taille de la bulle */
+    color: #ffffff;
+    padding: 15px 30px; /* Augmentation de la taille du bouton */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 18px; /* Augmentation de la taille du texte */
+}
+
+#logout-button45:hover {
+    background-color: #06283D;
+}
