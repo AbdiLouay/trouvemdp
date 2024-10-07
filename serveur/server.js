@@ -20,7 +20,6 @@ const conn = mysql.createConnection(dbConfig);
 app.use(bodyParser.json());
 app.use(cors());
 
-
 // Middleware d'authentification
 function authenticateToken(req, res, next) {
     const userCredentialsCookie = req.cookies.token; // Assurez-vous que le nom du cookie est correct
@@ -42,14 +41,26 @@ function authenticateToken(req, res, next) {
     });
 }
 
-// Route d'exemple nécessitant une authentification
-app.get('/api/private', authenticateToken, (req, res) => {
-    res.json({ message: 'Contenu privé accessible !' });
-});
+// Fonction de validation des entrées utilisateur
+function validateUserData(nom, motDePasse) {
+    // Vérifier si les champs sont non vides et si le mot de passe respecte une longueur minimale
+    if (!nom || !motDePasse) {
+        return false;
+    }
+    if (motDePasse.length < 6) {
+        return false;
+    }
+    return true;
+}
 
 // Route de connexion
 app.post('/api/login', (req, res) => {
     const { nom, motDePasse } = req.body;
+
+    // Validation des entrées utilisateur
+    if (!validateUserData(nom, motDePasse)) {
+        return res.status(400).json({ error: 'Champs nom ou mot de passe invalide ou manquant.' });
+    }
 
     const sql = `SELECT * FROM User WHERE nom = ? AND mot_de_passe = ?`;
     conn.query(sql, [nom, motDePasse], (err, results) => {
@@ -77,6 +88,11 @@ app.post('/api/login', (req, res) => {
 app.post('/api/register', (req, res) => {
     const { nom, motDePasse } = req.body;
 
+    // Validation des entrées utilisateur
+    if (!validateUserData(nom, motDePasse)) {
+        return res.status(400).json({ error: 'Champs nom ou mot de passe invalide ou manquant.' });
+    }
+
     // Génération du token pour le nouvel utilisateur
     const user = { nom };
     const token = jwt.sign(user, 'votre_clé_secrète', { expiresIn: '7d' });
@@ -93,10 +109,13 @@ app.post('/api/register', (req, res) => {
     });
 });
 
+// Route d'exemple nécessitant une authentification
+app.get('/api/private', authenticateToken, (req, res) => {
+    res.json({ message: 'Contenu privé accessible !' });
+});
 
 // Démarrage du serveur sur le port 3000
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Serveur démarré sur le port ${PORT}`);
 });
-
