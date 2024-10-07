@@ -9,7 +9,7 @@ const cors = require('cors');
 const dbConfig = {
     host: '192.168.65.243',
     user: 'userWeb', // Remplacez par votre nom d'utilisateur
-    password: 'userWeb1234', // Remplacez par votre mot de passe
+    password: '******', // Remplacez par votre mot de passe
     database: 'projet1'
 };
 
